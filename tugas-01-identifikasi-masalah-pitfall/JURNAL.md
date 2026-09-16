@@ -3,7 +3,7 @@
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
 ## [Tanggal diskusi 1]
-- Peserta: Farrel Athallah, Sugiwindarto, Salman Alfarizi
+- Peserta: Farrel Athallah, Sugiwindarto
 - Poin diskusi: Mengidentifikasi masalah utama FoodGo dan Menentukan pitfall yang paling sesuai
 - Perbedaan pendapat (jika ada): -
 
@@ -11,7 +11,7 @@
 - 15 September 2026
 
 ## Review Silang
-- Farrel Athallah mengomentari analisis Salman Alfarizi: Menurut saya, analisis Salman sudah cukup jelas dalam menghubungkan pitfall The network is reliable dengan kondisi FoodGo, terutama pada asumsi bahwa jaringan selalu dapat diandalkan dan tidak membutuhkan retry. Dampak yang dijelaskan juga sudah sesuai dengan skenario, yaitu ketika terjadi gangguan komunikasi, error dapat langsung diteruskan ke pengguna. Solusi berupa retry dengan exponential backoff dan jitter juga sudah tepat. Namun, menurut saya bagian dampaknya dapat diperjelas lagi dengan menghubungkannya dengan kondisi trafik tinggi, karena saat trafik meningkat, retry yang tidak dikontrol justru berpotensi memperbesar beban service yang sedang bermasalah
+- Farrel Athallah mengomentari analisis Sugiwindarto: Menurut saya, analisis Salman sudah cukup jelas dalam menghubungkan pitfall The network is reliable dengan kondisi FoodGo, terutama pada asumsi bahwa jaringan selalu dapat diandalkan dan tidak membutuhkan retry. Dampak yang dijelaskan juga sudah sesuai dengan skenario, yaitu ketika terjadi gangguan komunikasi, error dapat langsung diteruskan ke pengguna. Solusi berupa retry dengan exponential backoff dan jitter juga sudah tepat. Namun, menurut saya bagian dampaknya dapat diperjelas lagi dengan menghubungkannya dengan kondisi trafik tinggi, karena saat trafik meningkat, retry yang tidak dikontrol justru berpotensi memperbesar beban service yang sedang bermasalah
 
 ## Log Penggunaan AI (Level 2)
 
