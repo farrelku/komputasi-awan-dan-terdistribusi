@@ -3,7 +3,7 @@
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
 ## [Tanggal diskusi 1]
-- Peserta: Farrel Athallah, Sugiwindarto
+- Peserta: Farrel Athallah, Sugiwindarto, Hirelda Talahatu
 - Poin diskusi: Mengidentifikasi masalah utama FoodGo dan Menentukan pitfall yang paling sesuai
 - Perbedaan pendapat (jika ada): -
 
