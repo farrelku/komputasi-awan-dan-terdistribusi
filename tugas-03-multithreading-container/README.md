@@ -7,7 +7,7 @@
 ## Tanpa Lock
 
 ### 1. Mengapa Race Condition Terjadi?
-Ketika banyak thread berjalan secara konkuren dan mengakses variabel global/shared counter yang sama (misalnya `total_processed`) tanpa mekanisme sinkronisasi, operasi inkremen seperti `counter += 1` bukan merupakan operasi atomik. Akibatnya, beberapa thread dapat membaca dan mengubah nilai counter secara bersamaan sehingga pembaruan salah satu thread dapat tertimpa oleh threa lainnya.
+Ketika banyak thread berjalan secara konkuren dan mengakses variabel global/shared counter yang sama (misalnya `total_processed`) tanpa mekanisme sinkronisasi, operasi inkremen seperti `counter += 1` bukan merupakan operasi atomik. Akibatnya, beberapa thread dapat membaca dan mengubah nilai counter secara bersamaan sehingga pembaruan salah satu thread dapat tertimpa oleh thread lainnya.
 
 ### 2. Analisis Perbaikan
 Menggunakan objek `threading.Lock()` untuk membungkus kode penambahan counter di dalam Critical Section.
