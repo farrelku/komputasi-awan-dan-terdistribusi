@@ -6,41 +6,6 @@
 
 Modul **Pembayaran** dan modul **Pesanan** FoodGo harus berkomunikasi secara reliabel. Untuk beberapa operasi (mis. cek status saldo) respons dibutuhkan **seketika** (sinkron). Untuk operasi lain (mis. kirim notifikasi "pembayaran berhasil" ke modul kurir) sistem **tidak boleh menunggu** — modul pembayaran harus tetap responsif walau modul kurir sedang sibuk/down (asinkron).
 
-## Pilihan Tugas
-
-Kelompok **wajib memilih salah satu jalur** di bawah (boleh mengerjakan keduanya untuk nilai eksplorasi tambahan, tapi minimal satu harus selesai penuh dengan bukti jalan):
-
-### Jalur A — RPC (Sinkron)
-
-Skeleton di folder `rpc/` memakai `xmlrpc` — bagian dari Python standard library, **tidak perlu install apa pun**.
-
-- `rpc/server.py`: mensimulasikan modul Pembayaran, expose fungsi `cek_saldo(user_id)` dan `proses_pembayaran(user_id, jumlah)` lewat RPC.
-- `rpc/client.py`: mensimulasikan modul Pesanan yang memanggil fungsi RPC di atas dan menunggu hasilnya.
-
-Jalankan (dua terminal terpisah, di laptop yang sama):
-```bash
-python3 rpc/server.py      # terminal 1
-python3 rpc/client.py      # terminal 2
-```
-
-### Jalur B — Message Queue / MOM (Asinkron)
-
-Skeleton di folder `mq/` memakai **RabbitMQ** yang dijalankan **lokal lewat Docker** (image resmi RabbitMQ, gratis, tidak perlu daftar akun apa pun) + library Python `pika`.
-
-```bash
-cd mq
-docker compose up -d           # jalankan broker RabbitMQ lokal
-python3 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-python3 consumer.py            # terminal 1: jalankan dulu consumer (modul kurir)
-python3 publisher.py           # terminal 2: kirim event (modul pembayaran)
-```
-
-- `mq/publisher.py`: mensimulasikan modul Pembayaran yang mem-publish event `pembayaran_berhasil` tanpa menunggu balasan.
-- `mq/consumer.py`: mensimulasikan modul Kurir/Notifikasi yang subscribe dan memproses event tersebut kapan pun siap.
-
-Dashboard manajemen RabbitMQ (untuk lihat antrean secara visual) otomatis aktif di `http://localhost:15672` (login default `guest`/`guest`) — sertakan screenshot dashboard ini sebagai bukti tambahan.
-
 ## Tugas Kelompok
 
 1. Lengkapi bagian `# TODO` di jalur yang dipilih.
@@ -48,28 +13,41 @@ Dashboard manajemen RabbitMQ (untuk lihat antrean secara visual) otomatis aktif 
 3. Untuk Jalur B, matikan dulu `consumer.py`, jalankan `publisher.py` beberapa kali, lalu nyalakan `consumer.py` — buktikan pesan **tetap diproses** (tidak hilang) karena antrean menyimpannya. Ini adalah inti pembelajaran *asynchronous decoupling*.
 4. Tulis analisis: kenapa jalur ini (RPC atau MQ) cocok untuk skenario yang kalian pilih, dan apa yang terjadi jika dipakai untuk skenario yang salah (mis. RPC dipakai untuk notifikasi kurir → modul pembayaran ikut lambat kalau kurir down).
 
-## Struktur Submission
+## Jawaban
 
-```
-tugas-04-rpc-message-queue/
-├── README.md      # Analisis: kenapa sinkron/asinkron, hasil uji "pesan tidak hilang"
-├── JURNAL.md
-├── rpc/            # Jalur A (jika dikerjakan)
-├── mq/             # Jalur B (jika dikerjakan)
-└── bukti/
-```
+## Consumer dimatikan + Publisher mengirim pesan
+![Deskripsi gambar](bukti/publish_mengirim.jpg)
 
-## Rubrik Penilaian (Tugas 4)
+## Bukti pesan tersimpan di RabbitMQ
+![Deskripsi gambar](bukti/Bukti_Rabbit.jpg)
 
-| Komponen | Bobot | Kriteria |
-|---|---|---|
-| Implementasi berjalan (minimal 1 jalur) | 35% | RPC call sukses dapat balasan, ATAU pesan MQ sukses dikonsumsi |
-| Bukti *asynchronous decoupling* (khusus Jalur B) / bukti sinkron blocking (Jalur A) | 25% | Skenario consumer mati lalu nyala lagi (B), atau bukti client menunggu response (A) |
-| Analisis pemilihan pola komunikasi | 25% | Justifikasi tepat berdasarkan kebutuhan sinkron vs asinkron di skenario |
-| Proses & kontribusi kelompok | 15% | `JURNAL.md`, commit history |
+## Consumer dinyalakan kembali
+![Deskripsi gambar](bukti/consumer_nyala.jpg)
 
-## Batasan Penggunaan AI (Level 2)
 
-Kebijakan **Level 2 (AI Assisted Idea Generation & Structuring)** berlaku — lihat [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Boleh bertanya konsep umum RPC/message queue ke AI; **tidak boleh** meminta AI menuliskan isi `# TODO` di `rpc/server.py`, `rpc/client.py`, `mq/publisher.py`, atau `mq/consumer.py`. Catat pemakaian AI di "Log Penggunaan AI" pada `JURNAL.md`.
+## Analisis Pemilihan Jalur
 
-- `JURNAL.md` wajib menjelaskan apa yang terjadi pada request RPC jika server mati di tengah proses (Jalur A), atau ke mana pesan "hilang sementara" tersimpan saat consumer mati (Jalur B) — jawaban generik/hafalan istilah tanpa mengaitkan ke hasil percobaan sendiri akan dinilai rendah.
+Kami memilih Jalur B, yaitu Message Queue (MQ) menggunakan RabbitMQ, karena
+komunikasi antara modul Pembayaran dan modul Kurir/Notifikasi tidak harus
+berlangsung secara langsung atau menunggu respons dari modul lain.
+
+Pada sistem ini, setelah pembayaran berhasil, modul Pembayaran mengirimkan event
+`pembayaran_berhasil` ke RabbitMQ. Pesan tersebut disimpan di dalam antrean dan
+dapat diproses oleh modul Kurir/Notifikasi ketika consumer tersedia. Dengan
+demikian, kedua modul tidak saling bergantung secara langsung dan proses
+pembayaran tetap dapat berjalan meskipun modul Kurir/Notifikasi sedang tidak
+aktif.
+
+Penggunaan Message Queue juga memberikan keuntungan asynchronous decoupling.
+Hal ini dibuktikan ketika `consumer.py` dimatikan, kemudian `publisher.py`
+mengirimkan beberapa pesan. Pesan tetap tersimpan di antrean RabbitMQ dan dapat
+diproses setelah `consumer.py` dinyalakan kembali.
+
+Sebaliknya, jika RPC digunakan untuk skenario notifikasi kurir, modul Pembayaran
+harus menunggu respons langsung dari modul Kurir. Jika modul Kurir sedang down
+atau mengalami gangguan jaringan, proses komunikasi dapat mengalami timeout
+atau error sehingga modul Pembayaran ikut terdampak dan menjadi lebih lambat.
+
+Jadi, Message Queue lebih cocok untuk proses notifikasi yang bersifat
+asynchronous karena pengirim tidak perlu menunggu consumer untuk memproses
+pesan.

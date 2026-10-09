@@ -4,8 +4,9 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     ports:
-      - "5672:5672"     # port AMQP untuk publisher/consumer
-      - "15672:15672"   # port dashboard web management
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_ERLANG_COOKIE: "FoodGoRabbitMQCookie2026KomputasiAwan"
