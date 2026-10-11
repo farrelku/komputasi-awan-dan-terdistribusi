@@ -17,7 +17,7 @@ Hasil yang diamati:
 - Saat consumer mati: publisher mencetak 3 baris "Event terkirim" dan "Publisher selesai mengirim event." tanpa error, jadi pengirim tidak terblokir walau consumer tidak aktif (publish_mengirim.jpg).
 - Di dashboard RabbitMQ: queue pembayaran_berhasil bertipe classic, berfitur Durable (D), berstatus running, dengan Ready = 3, Unacked = 0, Total = 3. Artinya ketiga pesan tersimpan di antrean dan belum diambil siapa pun (Bukti_Rabbit.jpg).
 - Setelah consumer dinyalakan: consumer mencetak "Kurir menerima notifikasi pembayaran" untuk user1 (Rp20000), user2 (Rp40000), dan user3 (Rp60000), sesuai urutan pengiriman (consumer_nyala.jpg).
-- Kesimpulan: tidak ada pesan yang hilang. Antrean menyimpan pesan selama consumer mati dan menyerahkannya setelah consumer aktif kembali. Ini membuktikan asynchronous decoupling: pengirim dan penerima tidak harus aktif bersamaan.
+ Dengan demikian, tidak ada pesan yang hilang. Antrean menyimpan pesan selama consumer mati dan menyerahkannya setelah consumer aktif kembali. Ini membuktikan asynchronous decoupling: pengirim dan penerima tidak harus aktif bersamaan.
 
 ## Log Penggunaan AI (Level 2)
 
