@@ -1,10 +1,19 @@
 # Jurnal Proses — Tugas 4
 
 ## Jalur yang dipilih
-- [RPC / MQ / keduanya], alasan: ...
+-  Jalur MQ, karena
+komunikasi antara modul Pembayaran dan modul Kurir/Notifikasi tidak harus
+berlangsung secara langsung atau menunggu respons dari modul lain.
 
 ## Kendala teknis
-- Error saat setup (mis. koneksi RabbitMQ ditolak, port bentrok): ...
+- Saat setup RabbitMQ menggunakan Docker, container sempat gagal berjalan karena
+  konfigurasi `RABBITMQ_ERLANG_COOKIE` tidak valid sehingga muncul error
+  `Too short cookie string`.
+- Solusi yang dilakukan adalah menambahkan `RABBITMQ_ERLANG_COOKIE` dengan nilai
+  yang cukup panjang pada `docker-compose.yml`, kemudian menjalankan ulang
+  container menggunakan `docker compose down` dan `docker compose up -d`.
+- Setelah konfigurasi diperbaiki, RabbitMQ berhasil berjalan dan dapat diakses
+  melalui port `5672` untuk komunikasi AMQP dan `15672` untuk RabbitMQ Management.
 
 ## Uji "pesan tidak hilang" (khusus Jalur B)
 - Langkah uji: matikan consumer → jalankan publisher → nyalakan consumer
