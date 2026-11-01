@@ -82,7 +82,7 @@ kurir-002   192.168.1.11
 kurir-003   192.168.1.12
 ```
 
-Cara ini sederhana, tetapi jika tabel berada pada satu server pusat, server tersebut dapat menjadi **bottleneck** dan **single point of failure**. Jika server mengalami gangguan, proses pencarian ID Kurir ke IP dapat terganggu.
+Cara ini sederhana, tetapi jika tabel berada pada satu server pusat, server tersebut dapat menjadi bottleneck dan single point of failure. Jika server mengalami gangguan, proses pencarian ID Kurir ke IP dapat terganggu.
 
 Selain itu, setiap perubahan IP kurir harus memperbarui tabel pusat.
 
@@ -90,31 +90,17 @@ Selain itu, setiap perubahan IP kurir harus memperbarui tabel pusat.
 
 DNS dapat digunakan untuk melakukan resolusi nama ke alamat IP, tetapi DNS menggunakan struktur hierarkis dan pada dasarnya dirancang untuk resolusi nama domain.
 
-Pada kasus FoodGo, sistem membutuhkan pemetaan **ID Kurir yang tetap** ke **IP yang dinamis**, sekaligus pembagian tanggung jawab data ke beberapa node secara terdistribusi.
+Pada kasus FoodGo, sistem membutuhkan pemetaan ID Kurir yang tetap ke IP yang dinamis, sekaligus pembagian tanggung jawab data ke beberapa node secara terdistribusi.
 
 ### DHT/Chord
 
-DHT/Chord lebih sesuai karena ID Kurir dan ID node dipetakan menggunakan **consistent hashing** ke ruang identifier yang sama.
-
-Prosesnya dapat digambarkan sebagai:
-
-```text
-ID Kurir
-   ↓
-Consistent Hashing
-   ↓
-Hash Key
-   ↓
-Successor pada Chord Ring
-   ↓
-IP Kurir
-```
+DHT/Chord lebih sesuai karena ID Kurir dan ID node dipetakan menggunakan consistent hashing ke ruang identifier yang sama.
 
 Dengan mekanisme tersebut, FoodGo tidak bergantung pada satu server pusat. Data dapat dibagi ke beberapa node berdasarkan posisi pada ring.
 
 Ketika IP kurir berubah, ID Kurir tetap digunakan sebagai identitas untuk melakukan lookup terhadap IP terbaru. Ketika terjadi perubahan topologi, hanya mapping yang terdampak yang perlu berpindah.
 
-Dengan demikian, Chord lebih cocok karena dapat menangani **IP kurir yang dinamis, distribusi data, perubahan topologi, serta mengurangi ketergantungan terhadap single point of failure**.
+Dengan demikian, Chord lebih cocok karena dapat menangani IP kurir yang dinamis, distribusi data, perubahan topologi, serta mengurangi ketergantungan terhadap single point of failure.
 
 ---
 
