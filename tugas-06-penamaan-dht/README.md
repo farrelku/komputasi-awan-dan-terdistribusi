@@ -45,7 +45,6 @@ Sebelum node 177 keluar:
 
 ```text
 kurir-005 (hash 175)
-        ↓
 Node 177
 ```
 
@@ -57,7 +56,6 @@ Sehingga mapping berubah menjadi:
 
 ```text
 kurir-005 (hash 175)
-        ↓
 Node 40
 ```
 
