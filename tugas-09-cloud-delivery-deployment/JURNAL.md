@@ -4,13 +4,13 @@
 
 Dalam diskusi kelompok, kami mempertimbangkan empat opsi deployment model, yaitu Public Cloud, Private Cloud, Hybrid Cloud, dan Community Cloud.
 
-- **Public Cloud:** Memiliki keunggulan dalam skalabilitas dan kemudahan pengelolaan resource. Namun, kurang sesuai sebagai infrastruktur utama karena sistem menyimpan data kependudukan yang sangat sensitif dan pemerintah membutuhkan kendali penuh terhadap infrastruktur.
+- **Public Cloud:** Memiliki keunggulan dalam skalabilitas elastis dan kemudahan pengelolaan *resource*. Namun, model ini kurang sesuai sebagai infrastruktur utama karena sistem menyimpan data kependudukan yang sangat sensitif dan pemerintah membutuhkan kendali penuh terhadap lokasi penyimpanan (*data sovereignty*) serta keamanan fisik server.
 
-- **Private Cloud:** Menyediakan infrastruktur khusus yang dapat dikelola dan dikendalikan oleh pemerintah. Model ini dinilai paling sesuai karena memberikan kontrol lebih besar terhadap keamanan, penyimpanan, dan pengelolaan data warga negara.
+- **Private Cloud:** Menyediakan infrastruktur khusus yang dikelola dan dikendalikan sepenuhnya oleh pemerintah (baik *on-premise* maupun *hosted private cloud*). Model ini dinilai paling sesuai karena memberikan kontrol maksimal terhadap keamanan, audit akses, penyimpanan, dan kepatuhan terhadap regulasi perlindungan data pribadi warga negara.
+  
+- **Hybrid Cloud:** Menggabungkan *Private Cloud* dan *Public Cloud* sehingga memberikan fleksibilitas dan skalabilitas tinggi. Namun, terdapat peningkatan kompleksitas arsitektur, sinkronisasi data, serta potensi risiko keamanan apabila data sensitif berpindah antarlingkungan *cloud*.
 
-- **Hybrid Cloud:** Menggabungkan Private Cloud dan Public Cloud sehingga dapat memberikan fleksibilitas dan skalabilitas. Namun, terdapat risiko kebocoran data dan kompleksitas sinkronisasi apabila data sensitif berpindah antarlingkungan cloud.
-
-- **Community Cloud:** Dapat digunakan bersama oleh beberapa instansi pemerintah yang memiliki kebutuhan serupa. Namun, diperlukan kesepakatan dan tata kelola bersama terkait keamanan, hak akses, serta pengelolaan infrastruktur.
+- **Community Cloud:** Dapat digunakan bersama oleh beberapa instansi pemerintah yang memiliki kebutuhan dan standar keamanan serupa. Namun, diperlukan kesepakatan tata kelola (*governance*), pembagian biaya, dan manajemen hak akses lintas instansi yang kompleks.
 
 **Keputusan kelompok:**
 
